@@ -10,10 +10,6 @@ import java.util.Stack;
 public class Puzzle {
 	
 	public static void main(String args[]){		
-	//	PuzzleNode p1 = new PuzzleNode("7245_6831");
-	//	System.out.println(p1.isParityEven());
-		
-		
 		PuzzleNode s4 = new PuzzleNode("_13425786");
 		PuzzleNode e4 = new PuzzleNode("12345678_");
 		//testBFSDFS(s4,e4);
@@ -147,7 +143,6 @@ public class Puzzle {
 		Stack<PuzzleNode> unvisited = new Stack<PuzzleNode>();
 		HashMap<PuzzleNode, PuzzleNode> parentMap = new HashMap<PuzzleNode, PuzzleNode>();
 		
-
 		//set the initial vertex as the root of the search tree
 		parentMap.put(start, null);
 		//push the initial vertex to the stack

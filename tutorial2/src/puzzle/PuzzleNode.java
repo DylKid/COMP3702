@@ -39,7 +39,6 @@ public class PuzzleNode{
 					}
 				}
 			}
-			//System.out.printf("%d gives: %d\n", iNum, count);
 			sum+= count;
 		}
 		return (sum % 2 == 0);
@@ -144,7 +143,6 @@ public class PuzzleNode{
 		int bCol = bCoord[1];
 		
 		char temp = state2[aRow][aCol];
-		//System.out.printf("Swapping %s and %s\n", state2[aRow][aCol], state2[bRow][bCol]);
 		state2[aRow][aCol] = state2[bRow][bCol];
 		state2[bRow][bCol] = temp;
 		
@@ -200,54 +198,5 @@ public class PuzzleNode{
 		}
 		return a;
 	}
-	/*public PuzzleNode(String name) throws Exception {
-		super(name);
-		if(name.length()!=9){
-			throw new Exception("Invalid name, must be of length 9");
-		}
-		Set<String> testSet = new HashSet<String>();
-		for(int i = 0; i < name.length(); i++){
-			testSet.add(name.substring(i, i+1));
-		}
-		if(testSet.size() != name.length()){
-			throw new Exception("Can't have duplicates");
-		}
-	}
-	
-	public boolean isParityEven(){
-		int sum = 0;
-		int count = 0;
-		String name = this.getName();
-		for(int i = 0; i < name.length(); i++){
-			char current = name.charAt(i);
-			if(current == '_'){
-				continue;
-			} 
-			int iPos = Integer.parseInt(String.valueOf(current));
-			for(int j = i+1; j < name.length(); j++){
-				
-				count = 0;
-				char jPos = name.charAt(j);
-				
-				if(jPos == '_'){
-					continue;
-				}
-				int jInt = Integer.parseInt(String.valueOf(jPos));
-				if(iPos > jInt){
-					count++;
-				}
-			}
-			sum += count;
-		}
-		if(sum % 2 == 0){
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public void left(){
-		
-	}*/
 
 }
