@@ -19,6 +19,32 @@ public class PuzzleNode{
 		}
 	}
 	
+	public boolean isParityEven(){
+		String state = this.stringRep();
+		int sum = 0;
+		for(int i = 0; i < state.length(); i++){
+			int iNum = Character.getNumericValue(state.charAt(i));
+			if(state.charAt(i) == '_'){
+				continue;
+			}
+			int count = 0;
+			for(int j = i; j < state.length(); j++){
+				if(state.charAt(j) == '_'){
+					continue;
+				} else{
+					
+					int jNum = Character.getNumericValue(state.charAt(j));
+					if(iNum > jNum){
+						count++;
+					}
+				}
+			}
+			//System.out.printf("%d gives: %d\n", iNum, count);
+			sum+= count;
+		}
+		return (sum % 2 == 0);
+	}
+	
 	public boolean isVisited(){
 		return visited;
 	}
