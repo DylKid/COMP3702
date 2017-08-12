@@ -7,8 +7,14 @@ public class PuzzleNode{
 	private char[][] state;
 	private boolean visited;
 	
+	private PuzzleNode parent;
+	private double cost;
+	
+	private String stringRep;
+	
 	public PuzzleNode(String set){
-		visited = false;
+		//visited = false;
+		stringRep = set;
 		state = new char[3][3];
 		int setIndex = 0;
 		for(int i = 0; i < 3; i++){
@@ -17,6 +23,26 @@ public class PuzzleNode{
 				setIndex++;
 			}
 		}
+		//cost = 0;
+		parent = null;
+	}
+	
+	public PuzzleNode(char[][] state, PuzzleNode parent){
+		this.state = new char[3][3];
+		for(int i = 0; i < 3; i++){
+			this.state[i] = state[i].clone();
+		}
+		this.parent = parent;
+		this.stringRep = this.stringRep();
+		//this.cost = cost;
+	}
+	
+	public double getCost(){
+		return cost;
+	}
+	
+	public PuzzleNode getParent(){
+		return parent;
 	}
 	
 	public boolean isParityEven(){
@@ -52,14 +78,6 @@ public class PuzzleNode{
 		visited = true;
 	}
 	
-	public PuzzleNode(char[][] state){
-		this.state = new char[3][3];
-		for(int i = 0; i < 3; i++){
-			this.state[i] = state[i].clone();
-		}
-		visited = false;
-	}
-	
 	public int[] findBlank(){
 		int[] ret = new int[2];
 		for(int i = 0; i < state.length; i++){
@@ -84,7 +102,7 @@ public class PuzzleNode{
 		
 		int[] leftCoords = blankCoords.clone();
 		leftCoords[1]--;	
-		return new PuzzleNode(swap(this.getState(), blankCoords, leftCoords));
+		return new PuzzleNode(swap(this.getState(), blankCoords, leftCoords), this);
 	}
 	
 	private char[][] getState(){
@@ -107,7 +125,7 @@ public class PuzzleNode{
 		int[] rightCoords = blankCoords.clone();
 		rightCoords[1]++;
 		
-		return new PuzzleNode(swap(this.getState(), blankCoords, rightCoords));
+		return new PuzzleNode(swap(this.getState(), blankCoords, rightCoords), this);
 	}
 	
 	public PuzzleNode down(){
@@ -120,7 +138,7 @@ public class PuzzleNode{
 		int[] downCoords = blankCoords.clone();
 		downCoords[0]++;
 		
-		return new PuzzleNode(swap(this.getState(), blankCoords, downCoords));
+		return new PuzzleNode(swap(this.getState(), blankCoords, downCoords), this);
 	}
 	
 	public PuzzleNode up(){
@@ -133,7 +151,7 @@ public class PuzzleNode{
 		int[] upCoords = blankCoords.clone();
 		upCoords[0]--;
 		
-		return new PuzzleNode(swap(this.getState(), blankCoords, upCoords));
+		return new PuzzleNode(swap(this.getState(), blankCoords, upCoords), this);
 	}
 	
 	public <T> char[][] swap(char[][] state2, int[] aCoord, int[] bCoord){
@@ -169,33 +187,26 @@ public class PuzzleNode{
 		return ret;
 	}
 	
+	public String getStringRep(){
+		return stringRep;
+	}
+	
 	@Override
 	public boolean equals(Object other){
 		if(other instanceof PuzzleNode){
-			PuzzleNode pz = (PuzzleNode) other;
-			char[][] otherState = pz.getState();
-			for(int i = 0; i < 3; i++){
-				for(int j = 0; j < 3; j++){
-					if(otherState[i][j] != this.state[i][j]){
-						return false;
-					}
-				}
+			other = (PuzzleNode) other;
+			if(((PuzzleNode) other).getStringRep().equals(stringRep)){
+				return true;
 			}
-			return true;
 		} else {
 			return false;
 		}
+		return false;
 	}
 	
 	public int hashCode(){
 		int a = 17;
-		for(int i = 0; i < 3; i++){
-			for(int j = 0; j < 3; j++){
-				if(this.state[i][j] != '_'){
-					a *= this.state[i][j];
-				}
-			}
-		}
+		a *= stringRep.hashCode();
 		return a;
 	}
 

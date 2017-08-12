@@ -1,9 +1,12 @@
 package Graph;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class Graph {
 	
@@ -45,6 +48,7 @@ public class Graph {
 		g.addNode(Bld51);
 		
 		g.addEdge(AEB, Bld51, 15);
+		g.addEdge(AEB, Bld78, 10);
 		
 		g.addNode(Bld7);
 		
@@ -52,13 +56,9 @@ public class Graph {
 		g.addEdge(Bld50, Bld7, 40);
 		g.addEdge(Bld51, Bld7, 40);
 		
-		//System.out.println(g);
-		g.dfs(UQLake, Bld7);
 		
-	//	System.out.println("---------------");
-	//	System.out.println("Neighbours of AEB: " + g.getNeighbours(AEB));
-		
-		
+		System.out.println(g);
+		g.ucs(UQLake, Bld7);
 	}
 	
 	private Map<Node, Map<Node, Integer>> adjacencyMap;
@@ -72,11 +72,70 @@ public class Graph {
 	}
 	
 	public void addEdge(Node node1, Node node2, int weight){
-		if(adjacencyMap.get(node1)!=null){
+	//	if(adjacencyMap.get(node1)!=null){
 			adjacencyMap.get(node1).put(node2, weight);
-		} else {
-			System.out.println("Add failed");
+	//	} else {
+	//		System.out.println("Add failed");
+	//	}
+	}
+	
+	public void ucs(Node start, Node goal){
+		PriorityQueue<Node> pq = new PriorityQueue<Node>();
+		start.visit();
+		start.setPath(0);
+		pq.add(start);
+		while(!pq.isEmpty()){
+			Node current = pq.poll();
+			
+			System.out.println(current);
+			current.visit();
+			
+			if(current.equals(goal)){
+				return;
+			}
+			
+			Map<Node, Integer> neighbours = this.getNeighbours(current);
+			
+			for(Entry<Node, Integer> neighbour : neighbours.entrySet()){
+				if(!neighbour.getKey().isVisited()){
+					neighbour.getKey().setPath(neighbour.getValue());
+					//Node n = new Node(neighbour.getKey());
+					//this.addNode(n);
+					//System.out.println("n:" + n);
+					//Map<Node, Integer> neighbourNeighbours = this.getNeighbours(neighbour.getKey());
+					//for(Entry<Node, Integer> neighbourNeighbour : neighbourNeighbours.entrySet()){
+					//	this.addEdge(n, neighbour.getKey(), neighbour.getValue());
+					//}
+					pq.add(neighbour.getKey());
+				}
+			}
+			System.out.println(neighbours);
+			System.out.println(pq);
+			
 		}
+	}
+	
+
+	
+	public void bfs(Node start, Node goal){
+		Queue<Node> queue = new LinkedList<Node>();
+		start.visit();
+		queue.add(start);
+		while(!queue.isEmpty()){
+			Node current = queue.poll();
+			
+			System.out.println(current);
+			
+			current.visit();
+			if(current.equals(goal)){
+				return;
+			}
+			Map<Node, Integer> neighbours = this.getNeighbours(current);
+			for(Entry<Node, Integer> neighbour : neighbours.entrySet()){
+				queue.add(neighbour.getKey());
+			}
+		}
+		
 	}
 	
 	public void dfs(Node start, Node goal){
@@ -99,10 +158,6 @@ public class Graph {
 			System.out.println("current node:" + t);
 			System.out.println("current stack:" + s);
 		}	
-	}
-	
-	public void bfs(Node start, Node goal){
-		
 	}
 	
 	public Map<Node, Integer> getNeighbours(Node node){
