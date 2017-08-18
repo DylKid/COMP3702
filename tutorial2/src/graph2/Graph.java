@@ -61,7 +61,7 @@ public class Graph {
 	public void pathToNode(Node n){
 		Node check = n;
 		while(n!=null){
-		//	System.out.println(n);
+			System.out.println(n);
 			n = n.getParent();
 		}
 	}
@@ -84,29 +84,25 @@ public class Graph {
 		HashSet<State> explored = new HashSet<State>();
 		while(!frontier.isEmpty()){
 			Node current = frontier.poll();
+			//System.out.println(current);
 			
-			System.out.println(current);
-			while(!explored.contains(current.getState())){
-				if(current.getState().getName().equals(end)){
-					//pathToNode(current);
-					return;
-				}
-				explored.add(current.getState());
-				Map<String, Integer> neighbours = adj.get(current.getState().getName());
-			//	for(Entry<String, Integer> neighbour)
-				for(Entry<String, Integer> neighbour : neighbours.entrySet()){
-					Node child = new Node(neighbour.getKey(), neighbour.getValue(), current);
-					child.getState().setPathCost(costToNode(child));
-					if(!explored.contains(child.getState())){
-						//System.out.println("Adding:" + child);
-						frontier.add(child);
-						//System.out.println("Path to: " + child);
-						pathToNode(child);
-						//System.out.println("COST:" + costToNode(child));
-						//System.out.println("--------------------");
-					}
+			if(current.getState().getName().equals(end)){
+				pathToNode(current);
+				return;
+			}
+			
+			explored.add(current.getState());
+			
+			Map<String, Integer> neighbours = adj.get(current.getState().getName());
+			for(Entry<String, Integer> neighbour : neighbours.entrySet()){
+				Node child = new Node(neighbour.getKey(), neighbour.getValue(), current);
+				child.getState().setPathCost(costToNode(child));
+				if(!explored.contains(child.getState())){
+					frontier.add(child);
+					//pathToNode(child);
 				}
 			}
+			//System.out.println(frontier);
 		}
 	}
 	
